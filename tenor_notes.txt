@@ -1,0 +1,9 @@
+Tenor flags an agent output that passed every rule yet betrayed its brief.
+
+An output can clear every mechanical check, no banned words, right length, right format, and still read wrong: off-tone, quietly upselling what the brief forbade, missing its point. That gap, letter versus intent, is what no ordinary check can see.
+
+open_brief(title, brief) registers the intent and voice an output must honour, bound to the caller. check(brief_id, output_url) is open to anybody: the contract fetches the output and a GenLayer round rules OFF_BRIEF / ON_BRIEF / UNCLEAR, told to assume the rules already pass and to judge only fidelity. OFF_BRIEF leaves a permanent strike, drawn from the output's own text.
+
+Un-gameable: a brief is never closed, strikes never clear, a clean tally never offsets them, and an unreadable page never strikes. A brief left unstruck is not certified good, only uncontradicted.
+
+Needs GenLayer: validators reach consensus on one categorical field over real-world text.
