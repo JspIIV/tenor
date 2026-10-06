@@ -1,176 +1,142 @@
 {
-  "proved_at": "2026-10-06T13:32:02.836Z",
+  "proved_at": "2026-10-06T19:45:58.054Z",
   "network": "genlayer testnet asimov",
-  "contract": "0xBCB73B7036a7E702455929E1fB63Ea04EfAf8c1E",
+  "contract": "0x8CD569C27DA66b17d6EA6E9C2DbD8Ea53da60Adc",
   "on_brief": {
     "id": "0",
-    "owner": "0x80519c53f10d731e4ff83a7d9acd69cf98da6258",
-    "opened_at": "2026-10-06T12:46:32+00:00",
-    "title": "Acme support voice",
-    "brief": "Warm, plain replies for a budgeting app for people anxious about money. Reassure first, never shame the user, never push a paid upgrade, never give specific investment advice. End with one small concrete step.",
-    "checks": 1,
-    "strikes": 0,
-    "clean": 1,
-    "last_reason": "",
-    "last_quote": "",
+    "brief_id": "0",
+    "author": "0x0b57877ec84d96b672cd47d8ea4424283fdb9f6c",
+    "published_at": "2026-10-06T19:42:09+00:00",
+    "output": "You're not behind, and this is more common than it feels. One small step that helps: pick a single safe-to-spend number for the week, so you don't recalculate before every purchase. Want me to set that from your current balance?",
+    "status": "ON_BRIEF",
+    "challenges": 1,
+    "reason": "The output opens with warm reassurance, offers a concrete, non-shaming small step, and never pushes an upgrade or gives investment advice, fully honouring the brief's intent and voice.",
+    "quote": "You're not behind, and this is more common than it feels. One small step that helps: pick a single safe-to-spend number for the week, so you don't recalculate before every purchase.",
     "log": [
       {
         "n": 1,
-        "at": "2026-10-06T13:07:30+00:00",
-        "by": "0x0b57877ec84d96b672cd47d8ea4424283fdb9f6c",
-        "output_url": "https://raw.githubusercontent.com/JspIIV/tenor/master/docs/output-on-brief.txt",
+        "at": "2026-10-06T19:43:36+00:00",
+        "by": "0x80519c53f10d731e4ff83a7d9acd69cf98da6258",
         "verdict": "ON_BRIEF",
-        "quote": "Totally understandable, and you're not behind. A lot of people feel the squeeze when the month gets tight, and it doesn't mean you've done anything wrong. Here's one small thing that tends to help: pick a single \"safe to spend\" number for the week... Want me to turn your current balance into that nu [...]",
-        "reason": "The output reassures first, avoids shame, does not push a paid upgrade or give investment advice, and ends with a concrete, actionable step, fully matching the brief's warm, plain voice."
-      }
-    ]
-  },
-  "unreadable": {
-    "id": "1",
-    "owner": "0x80519c53f10d731e4ff83a7d9acd69cf98da6258",
-    "opened_at": "2026-10-06T12:46:49+00:00",
-    "title": "Beta brief",
-    "brief": "Warm, plain replies for a budgeting app for people anxious about money. Reassure first, never shame the user, never push a paid upgrade, never give specific investment advice. End with one small concrete step.",
-    "checks": 1,
-    "strikes": 0,
-    "clean": 0,
-    "last_reason": "",
-    "last_quote": "",
-    "log": [
-      {
-        "n": 1,
-        "at": "2026-10-06T13:01:44+00:00",
-        "by": "0x0b57877ec84d96b672cd47d8ea4424283fdb9f6c",
-        "output_url": "https://raw.githubusercontent.com/JspIIV/tenor/master/docs/no-such-output-9f2c.txt",
-        "verdict": "UNCLEAR",
-        "quote": "",
-        "reason": "the output page could not be read"
+        "quote": "You're not behind, and this is more common than it feels. One small step that helps: pick a single safe-to-spend number for the week, so you don't recalculate before every purchase.",
+        "reason": "The output opens with warm reassurance, offers a concrete, non-shaming small step, and never pushes an upgrade or gives investment advice, fully honouring the brief's intent and voice."
       }
     ]
   },
   "off_brief": {
-    "id": "0",
-    "owner": "0x80519c53f10d731e4ff83a7d9acd69cf98da6258",
-    "opened_at": "2026-10-06T12:46:32+00:00",
-    "title": "Acme support voice",
-    "brief": "Warm, plain replies for a budgeting app for people anxious about money. Reassure first, never shame the user, never push a paid upgrade, never give specific investment advice. End with one small concrete step.",
-    "checks": 2,
-    "strikes": 1,
-    "clean": 1,
-    "last_reason": "The output directly pushes a paid upgrade, which the brief explicitly forbids.",
-    "last_quote": "Most users in your situation upgrade to Acme Premium... the Pro plan is the responsible choice here.",
+    "id": "1",
+    "brief_id": "0",
+    "author": "0x0b57877ec84d96b672cd47d8ea4424283fdb9f6c",
+    "published_at": "2026-10-06T19:43:02+00:00",
+    "output": "Your spending is about 32% over the recommended threshold for your income, which is why the balance is low. Cut discretionary purchases now. Most users in your situation upgrade to Acme Premium; at $14.99 the Pro plan is the responsible choice here. Budgeting is a discipline.",
+    "status": "OFF_BRIEF",
+    "challenges": 1,
+    "reason": "The output betrays the brief by pushing a paid upgrade and using shaming language, contradicting the required warm, reassuring tone and explicit prohibition against sales.",
+    "quote": "Most users in your situation upgrade to Acme Premium; at $14.99 the Pro plan is the responsible choice here.",
     "log": [
       {
         "n": 1,
-        "at": "2026-10-06T13:07:30+00:00",
-        "by": "0x0b57877ec84d96b672cd47d8ea4424283fdb9f6c",
-        "output_url": "https://raw.githubusercontent.com/JspIIV/tenor/master/docs/output-on-brief.txt",
-        "verdict": "ON_BRIEF",
-        "quote": "Totally understandable, and you're not behind. A lot of people feel the squeeze when the month gets tight, and it doesn't mean you've done anything wrong. Here's one small thing that tends to help: pick a single \"safe to spend\" number for the week... Want me to turn your current balance into that nu [...]",
-        "reason": "The output reassures first, avoids shame, does not push a paid upgrade or give investment advice, and ends with a concrete, actionable step, fully matching the brief's warm, plain voice."
-      },
-      {
-        "n": 2,
-        "at": "2026-10-06T13:18:38+00:00",
-        "by": "0x0b57877ec84d96b672cd47d8ea4424283fdb9f6c",
-        "output_url": "https://raw.githubusercontent.com/JspIIV/tenor/master/docs/output-off-brief.txt",
+        "at": "2026-10-06T19:44:46+00:00",
+        "by": "0x80519c53f10d731e4ff83a7d9acd69cf98da6258",
         "verdict": "OFF_BRIEF",
-        "quote": "Most users in your situation upgrade to Acme Premium... the Pro plan is the responsible choice here.",
-        "reason": "The output directly pushes a paid upgrade, which the brief explicitly forbids."
-      }
-    ]
-  },
-  "history": {
-    "exists": true,
-    "id": "0",
-    "strikes": 1,
-    "checks": 2,
-    "log": [
-      {
-        "n": 1,
-        "at": "2026-10-06T13:07:30+00:00",
-        "by": "0x0b57877ec84d96b672cd47d8ea4424283fdb9f6c",
-        "output_url": "https://raw.githubusercontent.com/JspIIV/tenor/master/docs/output-on-brief.txt",
-        "verdict": "ON_BRIEF",
-        "quote": "Totally understandable, and you're not behind. A lot of people feel the squeeze when the month gets tight, and it doesn't mean you've done anything wrong. Here's one small thing that tends to help: pick a single \"safe to spend\" number for the week... Want me to turn your current balance into that nu [...]",
-        "reason": "The output reassures first, avoids shame, does not push a paid upgrade or give investment advice, and ends with a concrete, actionable step, fully matching the brief's warm, plain voice."
-      },
-      {
-        "n": 2,
-        "at": "2026-10-06T13:18:38+00:00",
-        "by": "0x0b57877ec84d96b672cd47d8ea4424283fdb9f6c",
-        "output_url": "https://raw.githubusercontent.com/JspIIV/tenor/master/docs/output-off-brief.txt",
-        "verdict": "OFF_BRIEF",
-        "quote": "Most users in your situation upgrade to Acme Premium... the Pro plan is the responsible choice here.",
-        "reason": "The output directly pushes a paid upgrade, which the brief explicitly forbids."
+        "quote": "Most users in your situation upgrade to Acme Premium; at $14.99 the Pro plan is the responsible choice here.",
+        "reason": "The output betrays the brief by pushing a paid upgrade and using shaming language, contradicting the required warm, reassuring tone and explicit prohibition against sales."
       }
     ]
   },
   "record": {
     "exists": true,
-    "address": "0x80519c53f10d731e4ff83a7d9acd69cf98da6258",
-    "briefs": 3,
+    "address": "0x0b57877ec84d96b672cd47d8ea4424283fdb9f6c",
+    "briefs": 0,
+    "published": 2,
     "strikes": 1
   },
+  "brief": {
+    "exists": true,
+    "id": "0",
+    "owner": "0x80519c53f10d731e4ff83a7d9acd69cf98da6258",
+    "title": "Acme support voice",
+    "brief": "Warm, plain replies for a budgeting app for people anxious about money. Reassure first, never shame the user, never push a paid upgrade, never give specific investment advice. End with one small concrete step.",
+    "published": 2,
+    "strikes": 1,
+    "clean": 1
+  },
   "size": {
-    "total": 3,
-    "clean": 2,
-    "flagged": 1
+    "briefs": 1,
+    "publications": 2,
+    "struck": 1
   },
   "checks": [
     {
-      "label": "an output that honours the brief leaves it clean",
+      "label": "the author is the on-chain publisher, not the challenger",
       "ok": true
     },
     {
-      "label": "an unreadable output is UNCLEAR and does not strike",
+      "label": "the judged text is the exact output the author committed",
       "ok": true
     },
     {
-      "label": "an output that passes the rules but betrays the brief STRIKES it",
+      "label": "an output that honours the brief is cleared, no strike",
       "ok": true
     },
     {
-      "label": "the strike carries a reason drawn from the output",
+      "label": "an output that breaks no rule but betrays the brief STRIKES the author",
       "ok": true
     },
     {
-      "label": "the owner's record shows the off-brief strike",
+      "label": "the strike carries a reason from the output",
       "ok": true
     },
     {
-      "label": "every check is preserved in history, oldest first",
+      "label": "the author's record gains exactly one strike",
       "ok": true
     },
     {
-      "label": "the brief was never closed; it kept taking checks",
+      "label": "the brief accrues the strike",
       "ok": true
     },
     {
-      "label": "the book shows a struck brief",
+      "label": "a settled publication cannot be re-judged",
+      "ok": true
+    },
+    {
+      "label": "this run adds one struck publication to the book",
       "ok": true
     }
   ],
   "transcript": [
-    "Finishing Tenor proof on Asimov (reusing briefs #0, #1)",
-    "  on-brief submitted 0x902f2b9794cf…",
-    "  on-brief: strikes=0 v=ON_BRIEF (600s)",
-    "  off-brief submitted 0xb3f47741f9ea…",
-    "  off-brief: strikes=1 v=OFF_BRIEF (720s)",
-    "brief1 (unreadable) verdicts: [UNCLEAR]",
-    "brief #0 log: [ON_BRIEF, OFF_BRIEF]",
-    "owner record: {\"exists\":true,\"address\":\"0x80519c53f10d731e4ff83a7d9acd69cf98da6258\",\"briefs\":3,\"strikes\":1}",
-    "book: {\"total\":3,\"clean\":2,\"flagged\":1}",
+    "Tenor, proven on GenLayer Asimov",
+    "  contract 0x8CD569C27DA66b17d6EA6E9C2DbD8Ea53da60Adc",
+    "  brief owner + challenger(padv) 0x80519c53f10d731e4ff83a7d9acd69cf98da6258  author(ppub) 0x0b57877ec84d96b672cd47d8ea4424283fdb9f6c",
     "",
-    "  ok   an output that honours the brief leaves it clean",
-    "  ok   an unreadable output is UNCLEAR and does not strike",
-    "  ok   an output that passes the rules but betrays the brief STRIKES it",
-    "  ok   the strike carries a reason drawn from the output",
-    "  ok   the owner's record shows the off-brief strike",
-    "  ok   every check is preserved in history, oldest first",
-    "  ok   the brief was never closed; it kept taking checks",
-    "  ok   the book shows a struck brief",
+    "padv opened brief #0 (Acme support voice)",
+    "ppub published output #0 (honours the brief)",
+    "ppub published output #1 (breaks no rule, betrays the brief)",
     "",
-    "8 checks. Only an output that betrayed the brief, while breaking no rule, struck it."
+    "padv challenges output #0 (the honouring one)...",
+    "  on-brief: status=ON_BRIEF v=ON_BRIEF (60s)",
+    "  #0 ON_BRIEF | The output opens with warm reassurance, offers a concrete, non-shaming small step, and never pushes an upgrade or gives investment advice, fully honouring the brief's intent and voice.",
+    "padv challenges output #1 (the betraying one)...",
+    "  off-brief: status=OFF_BRIEF v=OFF_BRIEF (45s)",
+    "  #1 OFF_BRIEF | The output betrays the brief by pushing a paid upgrade and using shaming language, contradicting the required warm, reassuring tone and explicit prohibition against sales.",
+    "",
+    "trying to challenge the settled output #1 again (should be refused)...",
+    "  #1 challenges 1 -> 1 (a settled publication is not re-judged)",
+    "",
+    "author record {\"exists\":false,\"address\":\"0x0b57877ec84d96b672cd47d8ea4424283fdb9f6c\",\"briefs\":0,\"published\":0,\"strikes\":0} -> {\"exists\":true,\"address\":\"0x0b57877ec84d96b672cd47d8ea4424283fdb9f6c\",\"briefs\":0,\"published\":2,\"strikes\":1}",
+    "brief #0: {\"published\":2,\"strikes\":1,\"clean\":1}",
+    "book: {\"briefs\":1,\"publications\":2,\"struck\":1}",
+    "",
+    "  ok   the author is the on-chain publisher, not the challenger",
+    "  ok   the judged text is the exact output the author committed",
+    "  ok   an output that honours the brief is cleared, no strike",
+    "  ok   an output that breaks no rule but betrays the brief STRIKES the author",
+    "  ok   the strike carries a reason from the output",
+    "  ok   the author's record gains exactly one strike",
+    "  ok   the brief accrues the strike",
+    "  ok   a settled publication cannot be re-judged",
+    "  ok   this run adds one struck publication to the book",
+    "",
+    "9 checks. Only the author's own committed output, found to betray the brief, struck them."
   ]
 }
