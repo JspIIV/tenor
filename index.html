@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Tenor — passed every rule, betrayed the brief</title>
+<title>Tenor — held to the brief you published against</title>
 <style>
   :root{ --bg:#0a0812; --card:#161226; --line:#2a2340; --ink:#f1edfb; --dim:#b3a7d6; --faint:#766b95;
     --accent:#a78bfa; --grn:#4ade80; --red:#fb7185; --amber:#f5b301; }
@@ -18,33 +18,33 @@
   button.primary{background:var(--accent);color:#1a1033;border-color:transparent;font-weight:700}
   button:disabled{opacity:.5;cursor:default}
   h1{font-size:27px;margin:26px 0 6px;letter-spacing:-.3px}
-  .lead{color:var(--dim);max-width:730px}
+  .lead{color:var(--dim);max-width:740px}
   section{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;margin:16px 0}
   label{display:block;font:12px ui-monospace,monospace;color:var(--dim);letter-spacing:1px;text-transform:uppercase;margin:12px 0 5px}
-  input,textarea{width:100%;background:#0d0a18;border:1px solid var(--line);color:var(--ink);border-radius:9px;padding:10px 11px;font:inherit}
-  textarea{min-height:92px;resize:vertical}
+  input,textarea,select{width:100%;background:#0d0a18;border:1px solid var(--line);color:var(--ink);border-radius:9px;padding:10px 11px;font:inherit}
+  textarea{min-height:90px;resize:vertical}
   .actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:14px}
   .muted{color:var(--faint);font-size:13px}
   .status{margin-top:10px;color:var(--dim);font-size:14px;min-height:18px}
   h2{font-size:14px;color:var(--dim);font-family:ui-monospace,monospace;letter-spacing:1px;text-transform:uppercase;margin:28px 0 6px}
   .card{border-top:1px solid var(--line);padding:16px 0}.card:first-child{border-top:0}
   .row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-  .head{font-weight:700;font-size:16px}
+  .head{font-weight:700;font-size:15px}
   .badge{display:inline-block;font:12px ui-monospace,monospace;font-weight:700;padding:3px 9px;border-radius:999px}
-  .b-clean{background:#171f2b;color:var(--accent)} .b-struck{background:#331722;color:var(--red)}
+  .b-pending{background:#1f1a33;color:var(--amber)} .b-on{background:#17241b;color:var(--grn)} .b-off{background:#331722;color:var(--red)}
   .meta{color:var(--faint);font-size:12px;font-family:ui-monospace,monospace;margin-top:6px;word-break:break-all}
-  .brieftext{color:var(--dim);font-size:13px;margin-top:6px;border-left:2px solid var(--line);padding-left:10px;white-space:pre-wrap}
+  .output{color:var(--ink);font-size:14px;margin:8px 0;border-left:2px solid var(--line);padding-left:10px;white-space:pre-wrap}
   .why{color:var(--dim);font-size:13px;margin-top:8px;border-left:2px solid var(--red);padding-left:10px}
-  .counts{display:flex;gap:16px;color:var(--dim);font-size:13px;font-family:ui-monospace,monospace;margin-top:4px;flex-wrap:wrap}
-  .test{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
-  .test input{flex:1;min-width:220px}
+  .counts{display:flex;gap:16px;color:var(--dim);font-size:13px;font-family:ui-monospace,monospace;margin:4px 0 0;flex-wrap:wrap}
   footer{color:var(--faint);font-size:13px;border-top:1px solid var(--line);padding-top:18px;margin-top:30px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media(max-width:620px){.grid2{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <div class="wrap">
   <header>
-    <div class="brand">Tenor<i>.</i> the letter passed, the brief didn't</div>
+    <div class="brand">Tenor<i>.</i> held to the brief you signed</div>
     <div style="display:flex;gap:10px;align-items:center">
       <span class="net">GenLayer Asimov</span>
       <button id="connect">Connect wallet</button>
@@ -52,13 +52,14 @@
   </header>
   <div id="wstatus" class="muted" style="margin-top:10px"></div>
 
-  <h1>A public register that flags an output which passed every rule yet betrayed its brief.</h1>
-  <p class="lead">An agent output can clear every mechanical check, no banned words, the right length, the right
-    format, and still read wrong: off-tone, quietly selling something the brief forbade, missing the point it was
-    made for. Open a brief, the intent and voice an output is meant to honour. Anyone can then submit a public output
-    produced for it, and a round of GenLayer validators reads the output against the brief and rules whether it is
-    <b>off-brief</b>, assuming the rules already pass. Every off-brief output is a permanent strike. A brief with no
-    strikes is not certified good; it only means nobody has yet shown an output that betrays it.</p>
+  <h1>Hold an author to a brief, judged on their own on-chain words.</h1>
+  <p class="lead">An output can clear every mechanical check, no banned words, the right length, the right format, and
+    still betray the brief it was made for: off-tone, quietly selling something the brief forbade, missing the point.
+    Here the judged text is never an arbitrary page a stranger points at. An author <b>publishes</b> an output on
+    chain, in their own transaction, claiming it honours a standing brief, so they cannot disown it and no one can
+    forge it for them. Anyone can then <b>challenge</b> it, and a round of GenLayer validators reads the output against
+    the brief, assuming the rules already pass, and rules whether it is off-brief. An off-brief verdict strikes the
+    author. The contract fetches nothing; there is no page to fake.</p>
 
   <h2>Open a brief</h2>
   <section>
@@ -66,21 +67,30 @@
     <input id="title" placeholder="Acme support voice" />
     <label>The brief (the intent and voice an output must honour)</label>
     <textarea id="brief" placeholder="Warm, plain replies for a budgeting app for people anxious about money. Reassure first, never shame the user, never push a paid upgrade, never give specific investment advice. End with one small step."></textarea>
-    <div class="actions">
-      <button class="primary" id="make">Open brief</button>
-      <span class="muted">You are bound as the owner. It can only be struck if an output's own text betrays the brief.</span>
-    </div>
+    <div class="actions"><button class="primary" id="make">Open brief</button>
+      <span class="muted">You own the brief. It sets the standard everyone is held to.</span></div>
+    <div class="status" id="bstatus"></div>
+  </section>
+
+  <h2>Publish an output against a brief</h2>
+  <section>
+    <label>Brief</label>
+    <select id="briefsel"><option value="">Loading briefs…</option></select>
+    <label>Your output (stored on chain, under your address)</label>
+    <textarea id="output" placeholder="The reply, post, or message you stand behind for this brief."></textarea>
+    <div class="actions"><button class="primary" id="pub">Publish output</button>
+      <span class="muted">You are bound as the author. Anyone can challenge it; a round, not you, decides.</span></div>
     <div class="status" id="pstatus"></div>
   </section>
 
-  <h2>Briefs</h2>
+  <h2>Published outputs</h2>
   <div class="counts" id="counts"></div>
   <section id="board"><div class="muted">Reading the register from chain…</div></section>
 
   <footer>
     Contract: <a id="exp" href="#" target="_blank" rel="noopener">on the Asimov explorer</a> ·
     <a href="https://github.com/JspIIV/tenor" target="_blank" rel="noopener">source</a> ·
-    reads need no wallet; opening a brief and checking an output are transactions on GenLayer Asimov.
+    reads need no wallet; opening a brief, publishing, and challenging are transactions on GenLayer Asimov.
   </footer>
 </div>
 
@@ -88,7 +98,7 @@
 import { createClient } from "https://esm.sh/genlayer-js@1.1.8";
 import { testnetAsimov } from "https://esm.sh/genlayer-js@1.1.8/chains";
 
-const CONTRACT = "0xBCB73B7036a7E702455929E1fB63Ea04EfAf8c1E";
+const CONTRACT = "0x8CD569C27DA66b17d6EA6E9C2DbD8Ea53da60Adc";
 const CHAIN_ID_HEX = "0x107d";
 const CHAIN_PARAMS = { chainId: CHAIN_ID_HEX, chainName: "GenLayer Asimov",
   nativeCurrency:{name:"GEN",symbol:"GEN",decimals:18},
@@ -139,7 +149,7 @@ function client(){ return createClient({ chain: testnetAsimov, account, provider
 function wsay(msg){ const el=$("wstatus"); if(el) el.textContent=msg||""; }
 async function ensureWallet(){
   eip1193 = pickProvider();
-  if(!eip1193) throw new Error("No wallet found in this browser. Reading the register needs no wallet; to open a brief or check an output, install MetaMask and open this page in that browser (a wallet does not inject into Claude's built-in browser).");
+  if(!eip1193) throw new Error("No wallet found in this browser. Reading needs no wallet; to open a brief, publish, or challenge, install MetaMask and open this page in that browser (a wallet does not inject into Claude's built-in browser).");
   if(!account){ const a=await eip1193.request({method:"eth_requestAccounts"}); account=a&&a[0]; if(!account) throw new Error("No account was shared. Open MetaMask, unlock it, and connect this site."); $("connect").textContent=short(account); }
   await useGenLayer();
 }
@@ -148,7 +158,7 @@ $("connect").onclick=async ()=>{
   wsay(n>1 ? "Opening MetaMask ("+n+" wallet extensions detected; if nothing appears, click the MetaMask icon in your toolbar)…"
            : "Opening your wallet… confirm the connection in MetaMask.");
   const hint=setTimeout(()=>wsay("Still waiting on the wallet. Click the MetaMask icon in your browser toolbar; a request may be waiting there. If you have more than one wallet extension, disable the others and reload."), 3500);
-  try{ await ensureWallet(); clearTimeout(hint); wsay("Connected "+short(account)+" on GenLayer Asimov."); await loadBoard(); }
+  try{ await ensureWallet(); clearTimeout(hint); wsay("Connected "+short(account)+" on GenLayer Asimov."); await loadAll(); }
   catch(e){ clearTimeout(hint); const code=e&&e.code;
     if(code===-32002) wsay("A connection request is already open. Click the MetaMask icon in your toolbar to approve it.");
     else if(code===4001) wsay("Connection rejected in the wallet. Click Connect wallet to try again.");
@@ -160,12 +170,10 @@ async function sendWrite(fn, args){
   for(let attempt=1;;attempt++){ try{ return await c.writeContract({address:CONTRACT,functionName:fn,args,value:0n}); }
     catch(e){ if(!transient(e)||attempt>=6) throw e; await sleep(4000*attempt); } }
 }
-// Confirm a plain write on chain by watching for a change, since a slow Asimov write can
-// surface a transient wallet error while the transaction is still settling.
 async function confirmChange(check, statusEl, okMsg){
-  for(let i=0;i<45;i++){ await sleep(4000);
+  for(let i=0;i<60;i++){ await sleep(4000);
     let ok=false; try{ ok=await check(); }catch{}
-    if(ok){ statusEl.textContent=okMsg; await loadBoard(); return true; }
+    if(ok){ statusEl.textContent=okMsg; await loadAll(); return true; }
     statusEl.textContent=`Confirming on chain… ${(i+1)*4}s (Asimov can be slow; leave this open)`;
   }
   statusEl.textContent="The network did not confirm in time and may be congested. It may still land; reload in a minute, otherwise try again.";
@@ -177,63 +185,81 @@ $("make").onclick = async () => {
   try {
     await ensureWallet();
     const title=$("title").value.trim(), brief=$("brief").value.trim();
-    if(!title){ $("pstatus").textContent="Give the brief a title."; return; }
-    if(brief.length<12){ $("pstatus").textContent="Write the brief, the intent an output must honour."; return; }
-    $("pstatus").textContent="Opening… approve it in your wallet.";
-    let before=0; try{ before=(await read("size")).total; }catch{}
+    if(!title){ $("bstatus").textContent="Give the brief a title."; return; }
+    if(brief.length<12){ $("bstatus").textContent="Write the brief, the intent an output must honour."; return; }
+    $("bstatus").textContent="Opening… approve it in your wallet.";
+    let before=0; try{ before=(await read("size")).briefs; }catch{}
     try{ await sendWrite("open_brief",[title,brief]); }catch(e){}
-    $("pstatus").textContent="Submitted. Waiting for the network to confirm; this can take a minute on Asimov…";
-    const ok=await confirmChange(async ()=>((await read("size")).total>before), $("pstatus"), "Brief opened.");
+    $("bstatus").textContent="Submitted. Waiting for the network to confirm; this can take a minute on Asimov…";
+    const ok=await confirmChange(async ()=>((await read("size")).briefs>before), $("bstatus"), "Brief opened.");
     if(ok){ $("title").value=""; $("brief").value=""; }
-  } catch(e){ $("pstatus").textContent="Open failed: "+(e?.shortMessage||e?.message||e); }
+  } catch(e){ $("bstatus").textContent="Open failed: "+(e?.shortMessage||e?.message||e); }
 };
 
-/* ---- check an output ---- */
-async function check(id){
-  const el=$("s-"+id), input=$("r-"+id);
-  const ourl=(input?.value||"").trim();
-  if(!/^https?:\/\//.test(ourl)){ if(el) el.textContent="Give an http(s) URL for the output."; return; }
+/* ---- publish an output ---- */
+$("pub").onclick = async () => {
+  try {
+    await ensureWallet();
+    const bid=$("briefsel").value, output=$("output").value.trim();
+    if(bid===""){ $("pstatus").textContent="Pick a brief to publish against."; return; }
+    if(output.length<1){ $("pstatus").textContent="Write the output you stand behind."; return; }
+    $("pstatus").textContent="Publishing… approve it in your wallet.";
+    let before=0; try{ before=(await read("size")).publications; }catch{}
+    try{ await sendWrite("publish",[String(bid),output]); }catch(e){}
+    $("pstatus").textContent="Submitted. Waiting for the network to confirm; this can take a minute on Asimov…";
+    const ok=await confirmChange(async ()=>((await read("size")).publications>before), $("pstatus"), "Output published. Anyone can now challenge it.");
+    if(ok){ $("output").value=""; }
+  } catch(e){ $("pstatus").textContent="Publish failed: "+(e?.shortMessage||e?.message||e); }
+};
+
+/* ---- challenge a publication ---- */
+async function challenge(pid){
+  const el=$("s-"+pid);
   try{
     await ensureWallet();
-    if(el) el.textContent="Checking…";
-    const before=JSON.stringify(await read("get",[String(id)]));
-    try{ await sendWrite("check",[String(id),ourl]); }catch(e){ if(el) el.textContent="Submitted; the network may be slow, waiting for the round…"; }
-    for(let i=0;i<90;i++){ await sleep(4000);
-      const now=await read("get",[String(id)]);
-      if(el) el.textContent=`Round running… ${(i+1)*4}s`;
-      if(JSON.stringify(now)!==before){ await loadBoard(); return; } }
+    if(el) el.textContent="Challenging…";
+    const before=JSON.stringify(await read("publication",[String(pid)]));
+    try{ await sendWrite("challenge",[String(pid)]); }catch(e){ if(el) el.textContent="Submitted; the network may be slow, waiting for the round…"; }
+    for(let i=0;i<120;i++){ await sleep(5000);
+      const now=await read("publication",[String(pid)]);
+      if(el) el.textContent=`Round running… ${(i+1)*5}s (a round can take several minutes on Asimov)`;
+      if(JSON.stringify(now)!==before){ await loadAll(); return; } }
     if(el) el.textContent="Still settling; reload in a minute.";
-  }catch(e){ if(el) el.textContent="Check failed: "+(e?.shortMessage||e?.message||e); }
+  }catch(e){ if(el) el.textContent="Challenge failed: "+(e?.shortMessage||e?.message||e); }
 }
 
-/* ---- board ---- */
-function badge(struck){ return struck
-  ? `<span class="badge b-struck">${struck} STRIKE${struck===1?"":"S"}</span>`
-  : `<span class="badge b-clean">CLEAN</span>`; }
-async function loadBoard(){
-  const size = await read("size",[]).catch(()=>null);
-  if(size) $("counts").textContent = `${size.total} briefs · ${size.flagged} with off-brief outputs · ${size.clean} clean`;
-  const data = await read("page",["0","30"]).catch(()=>null);
+/* ---- render ---- */
+function badge(s){ const m={PENDING:["b-pending","PENDING"],ON_BRIEF:["b-on","ON-BRIEF"],OFF_BRIEF:["b-off","OFF-BRIEF"]}[s]||["b-pending",s];
+  return `<span class="badge ${m[0]}">${esc(m[1])}</span>`; }
+async function loadBriefs(){
+  const data = await read("briefs_page",["0","50"]).catch(()=>null);
   const items = (data && data.items) || [];
-  if(!items.length){ $("board").innerHTML='<div class="muted">No briefs yet. Open one above.</div>'; return; }
-  const recs = {};
-  for(const w of items){ if(!(w.owner in recs)){ try{ recs[w.owner]=await read("record",[w.owner]); }catch{ recs[w.owner]={briefs:0,strikes:0}; } } }
-  $("board").innerHTML = items.map(w=>{
-    const r = recs[w.owner]||{briefs:0,strikes:0};
-    const strikes = Number(w.strikes||0);
-    const n = Number(w.check_count||0);
-    return `<div class="card">
-      <div class="row">${badge(strikes)}<span class="head">${esc(w.title)}</span></div>
-      <div class="brieftext">${esc(w.brief)}</div>
-      <div class="meta">by ${esc((w.owner||"").slice(0,10))}… (record: ${esc(r.briefs)} briefs / ${esc(r.strikes)} strikes) · #${esc(w.id)} · ${n} check${n===1?"":"s"}${Number(w.clean)>0?` · ${esc(w.clean)} on-brief`:""}</div>
-      ${strikes>0&&w.last_reason?`<div class="why"><b>OFF-BRIEF</b> — ${esc(w.last_reason)}${w.last_quote?`<br><span class="muted">“${esc(w.last_quote)}”</span>`:""}</div>`:""}
-      <div class="test"><input id="r-${esc(w.id)}" placeholder="URL of an output produced for this brief (https://…)" />
-        <button id="b-${esc(w.id)}" data-id="${esc(w.id)}" class="checkbtn primary">Check an output</button></div>
-      <div class="status" id="s-${esc(w.id)}"></div>
-    </div>`; }).join("");
-  document.querySelectorAll(".checkbtn").forEach(b=>b.onclick=()=>check(b.getAttribute("data-id")));
+  const sel=$("briefsel");
+  if(!items.length){ sel.innerHTML='<option value="">No briefs yet — open one above</option>'; return; }
+  sel.innerHTML = items.map(b=>`<option value="${esc(b.id)}">#${esc(b.id)} · ${esc(b.title)}${Number(b.strikes)>0?` (${esc(b.strikes)} struck)`:""}</option>`).join("");
 }
-loadBoard();
+async function loadFeed(){
+  const size = await read("size",[]).catch(()=>null);
+  if(size) $("counts").textContent = `${size.publications} outputs · ${size.struck} struck off-brief · ${size.briefs} briefs`;
+  const data = await read("page",["0","40"]).catch(()=>null);
+  const items = (data && data.items) || [];
+  if(!items.length){ $("board").innerHTML='<div class="muted">No outputs published yet. Open a brief, then publish an output against it.</div>'; return; }
+  const recs = {};
+  for(const w of items){ if(!(w.author in recs)){ try{ recs[w.author]=await read("record",[w.author]); }catch{ recs[w.author]={published:0,strikes:0}; } } }
+  $("board").innerHTML = items.map(w=>{
+    const r = recs[w.author]||{published:0,strikes:0};
+    const n = Number(w.challenge_count||0);
+    return `<div class="card">
+      <div class="row">${badge(w.status)}<span class="head">on “${esc(w.brief_title)}” · brief #${esc(w.brief_id)}</span></div>
+      <div class="output">${esc(w.output)}</div>
+      <div class="meta">author ${esc((w.author||"").slice(0,10))}… (record: ${esc(r.published)} published / ${esc(r.strikes)} strikes) · publication #${esc(w.id)} · ${n} challenge${n===1?"":"s"}</div>
+      ${w.status==="OFF_BRIEF"&&w.reason?`<div class="why"><b>OFF-BRIEF</b> — ${esc(w.reason)}${w.quote?`<br><span class="muted">“${esc(w.quote)}”</span>`:""}</div>`:""}
+      ${w.status==="PENDING"?`<div class="actions"><button data-pid="${esc(w.id)}" class="chbtn primary">Challenge this output</button></div><div class="status" id="s-${esc(w.id)}"></div>`:""}
+    </div>`; }).join("");
+  document.querySelectorAll(".chbtn").forEach(b=>b.onclick=()=>challenge(b.getAttribute("data-pid")));
+}
+async function loadAll(){ await loadBriefs(); await loadFeed(); }
+loadAll();
 </script>
 </body>
 </html>

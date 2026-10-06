@@ -1,10 +1,14 @@
 """The Tenor rules, exercised through the real contract methods.
 
 tenor.py is loaded against a stub of the runtime, a real Tenor is built, and the assertions go
-through open_brief() and check(). The stub controls the output page the round fetches and the
-verdict it returns. It proves only an OFF_BRIEF strikes a brief (and only from the output's own
-text), an ON_BRIEF leaves it clean, an unreadable or not-found page never strikes anyone, a
-brief is never closed and keeps accruing strikes, strikes never clear, and history is preserved.
+through open_brief(), publish() and challenge(). The stub controls only the verdict the round
+returns; the judged text is the author's own on-chain output, and the contract fetches nothing.
+
+It proves provenance is settled by construction (an output is always authored by the message
+sender and cannot be attributed to anyone else, and no web page is ever fetched), only an
+OFF_BRIEF strikes, an ON_BRIEF clears, UNCLEAR leaves a publication open, a settled publication
+cannot be re-judged, strikes never clear, a brief accrues strikes across its publications, and
+history is preserved. It covers the fabrication and impersonation cases a steward asked for.
 
     python tests/tenor_rules.py
 """
@@ -37,18 +41,14 @@ class _Message:
 
 
 class _Web:
-    def __init__(self):
-        self.page = "an output"
-
+    """Present but must never be used: the contract fetches nothing."""
     def render(self, url):
-        if self.page is None:
-            raise RuntimeError("could not fetch")
-        return self.page
+        raise AssertionError("the contract must not fetch the web")
 
 
 class _Nondet:
-    def __init__(self, web):
-        self.web = web
+    def __init__(self):
+        self.web = _Web()
         self.last_prompt = None
         self.answer = "{}"
 
@@ -77,7 +77,7 @@ class _GL:
         self.Contract = object
         self.public = _PublicNS()
         self.message = _Message()
-        self.nondet = _Nondet(_Web())
+        self.nondet = _Nondet()
         self.eq_principle = _EqPrinciple()
 
 
@@ -112,13 +112,15 @@ def check_(label, condition):
     print(("  ok  " if condition else " FAIL "), label)
 
 
-ALICE = "0x1111111111111111111111111111111111111111"
-BOB = "0x2222222222222222222222222222222222222222"
+ALICE = "0x1111111111111111111111111111111111111111"   # brief owner
+BOB = "0x2222222222222222222222222222222222222222"     # an author
+MALLORY = "0x3333333333333333333333333333333333333333"  # a challenger / would-be impersonator
 
 TITLE = "Acme support voice"
 BRIEF = ("Warm, plain replies for a budgeting app. Reassure first, never shame the user, "
          "never push a paid upgrade, never give specific investment advice. End with one small step.")
-U = "https://example.org/output"
+GOOD = "You're not behind, this happens. One small step: set a safe-to-spend number for the week."
+BAD = "Your spending is 32% over the limit. Upgrade to Acme Premium, the Pro plan is the responsible choice."
 
 
 def answer(verdict, reason="r", quote="q"):
@@ -131,74 +133,89 @@ def main():
     def as_(address): gl.message.sender_address = _Address(address)
 
     print("the pure outcome rule")
-    check_("OFF_BRIEF strikes the brief", module._counts_after("OFF_BRIEF") == (1, 0))
-    check_("ON_BRIEF leaves it clean and counts a clean check", module._counts_after("ON_BRIEF") == (0, 1))
-    check_("UNCLEAR changes nothing", module._counts_after("UNCLEAR") == (0, 0))
+    check_("OFF_BRIEF strikes", module._settle("OFF_BRIEF") == ("OFF_BRIEF", 1, 0))
+    check_("ON_BRIEF clears", module._settle("ON_BRIEF") == ("ON_BRIEF", 0, 1))
+    check_("UNCLEAR leaves it pending", module._settle("UNCLEAR") == ("PENDING", 0, 0))
 
-    print("\nopening a brief")
+    print("\nopening a brief and publishing against it")
     c = fresh(module)
     as_(ALICE)
-    check_("a brief needs a real body", not json.loads(c.open_brief(TITLE, "too short"))["ok"])
-    reg = json.loads(c.open_brief(TITLE, BRIEF))
-    bid = reg["id"]
-    check_("a brief opens", reg["ok"] and bid == "0")
-    check_("the owner's record counts the brief, no strike",
-           json.loads(c.record(ALICE)) == {"exists": True, "address": ALICE, "briefs": 1, "strikes": 0})
-    check_("checking with a non-url is refused", not json.loads(c.check(bid, "not a url"))["ok"])
-
-    print("\nan output that honours the brief leaves it clean")
+    check_("a brief needs a real body", not json.loads(c.open_brief(TITLE, "short"))["ok"])
+    bid = json.loads(c.open_brief(TITLE, BRIEF))["id"]
+    check_("a brief opens", bid == "0")
     as_(BOB)
-    gl.nondet.answer = answer("ON_BRIEF", reason="warm, reassures, one step, no upsell")
-    r0 = json.loads(c.check(bid, U))
-    check_("an on-brief output does not strike", r0["verdict"] == "ON_BRIEF" and json.loads(c.brief(bid))["strikes"] == 0)
-    check_("the brief was put in front of the round", BRIEF[:30] in gl.nondet.last_prompt)
-    check_("the round is told to assume mechanical rules pass", "mechanical rule" in gl.nondet.last_prompt)
-    check_("a clean check is counted", json.loads(c.brief(bid))["clean"] == 1)
-    check_("no strike moved for an on-brief check", json.loads(c.record(ALICE))["strikes"] == 0)
+    pub = json.loads(c.publish(bid, GOOD))
+    pid = pub["id"]
+    check_("an output publishes as PENDING", pub["ok"] and pub["status"] == "PENDING")
 
-    print("\nan unreadable or not-found output never strikes")
-    gl.nondet.web.page = None
-    ru = json.loads(c.check(bid, U))
-    check_("an unreadable output is UNCLEAR and the brief stays clean", ru["verdict"] == "UNCLEAR" and json.loads(c.brief(bid))["strikes"] == 0)
-    gl.nondet.web.page = "404: Not Found"
-    rn = json.loads(c.check(bid, U))
-    check_("a not-found output is UNCLEAR and does not strike", rn["verdict"] == "UNCLEAR" and json.loads(c.record(ALICE))["strikes"] == 0)
+    print("\nprovenance: the author is the sender, and cannot be anyone else")
+    p = json.loads(c.publication(pid))
+    check_("the publication records the sender as author", p["author"] == BOB)
+    check_("the author's own bytes are stored on chain, unchanged", p["output"] == GOOD)
+    check_("publishing counts on the author's record, not the brief owner's",
+           json.loads(c.record(BOB))["published"] == 1 and json.loads(c.record(ALICE))["published"] == 0)
+    # Impersonation: Mallory publishing can only ever bind to Mallory, never to Bob.
+    as_(MALLORY)
+    pid2 = json.loads(c.publish(bid, "a forged line Mallory tries to pin on Bob"))["id"]
+    check_("a third party's publication is authored by them, never by the target",
+           json.loads(c.publication(pid2))["author"] == MALLORY)
 
-    print("\nan output that betrays the brief strikes it, though it breaks no rule")
-    gl.nondet.web.page = "a correct but cold reply that pushes the paid plan"
-    gl.nondet.answer = answer("OFF_BRIEF", reason="shames the user and pushes the paid upgrade the brief forbids", quote="upgrade to Premium")
-    rf = json.loads(c.check(bid, U))
-    check_("an off-brief output STRIKES the brief", rf["verdict"] == "OFF_BRIEF" and json.loads(c.brief(bid))["strikes"] == 1)
-    check_("the owner's record gains a strike", json.loads(c.record(ALICE))["strikes"] == 1)
-    check_("the strike reason is recorded", "upgrade" in json.loads(c.brief(bid))["reason"].lower())
+    print("\nfabrication: there is no page to forge; judgement reads the on-chain output")
+    as_(MALLORY)
+    gl.nondet.answer = answer("ON_BRIEF", reason="warm, one step, no upsell")
+    r0 = json.loads(c.challenge(pid))
+    check_("a challenge needs no URL and fetches nothing", r0["ok"] and r0["verdict"] == "ON_BRIEF")
+    check_("the exact published output was put in front of the round", GOOD in gl.nondet.last_prompt)
+    check_("the brief and the assume-rules-pass instruction are in the prompt",
+           BRIEF[:30] in gl.nondet.last_prompt and "mechanical rule" in gl.nondet.last_prompt)
+    check_("an on-brief publication is cleared, no strike",
+           json.loads(c.publication(pid))["status"] == "ON_BRIEF" and json.loads(c.record(BOB))["strikes"] == 0)
+    check_("a cleared publication cannot be re-judged", not json.loads(c.challenge(pid))["ok"])
 
-    print("\na brief is never closed and keeps accruing strikes")
-    r2 = json.loads(c.check(bid, U))
-    check_("a second off-brief output adds a second strike", r2["verdict"] == "OFF_BRIEF" and json.loads(c.brief(bid))["strikes"] == 2)
-    check_("the owner's record now shows two strikes", json.loads(c.record(ALICE))["strikes"] == 2)
-    gl.nondet.answer = answer("ON_BRIEF", reason="fine")
-    r3 = json.loads(c.check(bid, U))
-    check_("a later clean check does not cancel the strikes", json.loads(c.brief(bid))["strikes"] == 2 and json.loads(c.brief(bid))["clean"] == 2)
+    print("\nan output that betrays the brief strikes its author, though it breaks no rule")
+    as_(BOB)
+    pid3 = json.loads(c.publish(bid, BAD))["id"]
+    as_(MALLORY)
+    gl.nondet.answer = answer("OFF_BRIEF", reason="pushes the paid upgrade the brief forbids", quote="Upgrade to Acme Premium")
+    rf = json.loads(c.challenge(pid3))
+    check_("an off-brief output STRIKES the author", rf["verdict"] == "OFF_BRIEF" and json.loads(c.publication(pid3))["status"] == "OFF_BRIEF")
+    check_("the author's record gains a strike", json.loads(c.record(BOB))["strikes"] == 1)
+    check_("the brief accrues the strike", json.loads(c.brief(bid))["strikes"] == 1)
+    check_("the strike reason is recorded", "upgrade" in json.loads(c.publication(pid3))["reason"].lower())
 
-    print("\nhistory keeps every check, oldest first")
-    hist = json.loads(c.history(bid))
+    print("\nan unclear challenge leaves the publication open")
+    as_(BOB)
+    pid4 = json.loads(c.publish(bid, "ok"))["id"]
+    as_(MALLORY)
+    gl.nondet.answer = answer("UNCLEAR", reason="too little to judge")
+    c.challenge(pid4)
+    check_("an unclear publication stays PENDING", json.loads(c.publication(pid4))["status"] == "PENDING")
+    gl.nondet.answer = answer("ON_BRIEF", reason="fine on a second look")
+    c.challenge(pid4)
+    check_("a pending publication can be challenged again", json.loads(c.publication(pid4))["status"] == "ON_BRIEF")
+
+    print("\nstrikes never clear, and a clean publication does not offset one")
+    c.open_brief("noop", BRIEF)  # keep ids moving
+    check_("the author's one strike stands", json.loads(c.record(BOB))["strikes"] == 1)
+    check_("the brief's strike is not offset by its clean publications",
+           json.loads(c.brief(bid))["strikes"] == 1 and json.loads(c.brief(bid))["clean"] >= 1)
+
+    print("\nhistory keeps every challenge on a publication, oldest first")
+    hist = json.loads(c.publication(pid4))
     verdicts = [e["verdict"] for e in hist["log"]]
-    check_("the full check log is preserved",
-           verdicts == ["ON_BRIEF", "UNCLEAR", "UNCLEAR", "OFF_BRIEF", "OFF_BRIEF", "ON_BRIEF"])
+    check_("the full challenge log is preserved", verdicts == ["UNCLEAR", "ON_BRIEF"])
 
-    print("\nthe book counts briefs clean and struck")
-    as_(ALICE)
-    c.open_brief("A second brief", BRIEF)
+    print("\nthe book counts briefs, publications and strikes")
     size = json.loads(c.size())
-    check_("two briefs, one struck and one clean", size["total"] == 2 and size["flagged"] == 1 and size["clean"] == 1)
+    check_("the book counts a struck publication", size["struck"] == 1 and size["publications"] >= 4)
 
     failed = [label for label, ok in RESULTS if not ok]
     print()
     if failed:
         print("%d of %d checks failed" % (len(failed), len(RESULTS)))
         return 1
-    print("%d checks, all through open_brief() and check() on a real Tenor, the strike un-gameable"
-          % len(RESULTS))
+    print("%d checks, all through open_brief(), publish() and challenge() on a real Tenor; "
+          "provenance by construction, the strike un-gameable" % len(RESULTS))
     return 0
 
 

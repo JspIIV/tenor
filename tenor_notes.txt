@@ -1,9 +1,7 @@
-Tenor flags an agent output that passed every rule yet betrayed its brief.
+Tenor holds an author to a brief, judged on their own on-chain words.
 
-An output can clear every mechanical check, no banned words, right length, right format, and still read wrong: off-tone, quietly upselling what the brief forbade, missing its point. That gap, letter versus intent, is what no ordinary check can see.
+An output can clear every mechanical check, no banned words, right length, right format, and still betray the brief it was made for: off-tone, upselling what the brief forbade, missing its point. Letter versus intent is what no ordinary check can see.
 
-open_brief(title, brief) registers the intent and voice an output must honour, bound to the caller. check(brief_id, output_url) is open to anybody: the contract fetches the output and a GenLayer round rules OFF_BRIEF / ON_BRIEF / UNCLEAR, told to assume the rules already pass and to judge only fidelity. OFF_BRIEF leaves a permanent strike, drawn from the output's own text.
+open_brief(title, brief) states the intent and voice an output must honour. publish(brief_id, output) commits an output on chain; the author is the message sender, by construction, and the output is their own bytes. challenge(pub_id) is open to anybody: a GenLayer round reads the on-chain output against the brief, told to assume the rules pass, and returns OFF_BRIEF / ON_BRIEF / UNCLEAR. Only OFF_BRIEF strikes the author.
 
-Un-gameable: a brief is never closed, strikes never clear, a clean tally never offsets them, and an unreadable page never strikes. A brief left unstruck is not certified good, only uncontradicted.
-
-Needs GenLayer: validators reach consensus on one categorical field over real-world text.
+Provenance is settled by construction: the contract fetches nothing, so there is no page to forge, and no one can pin an output on an author who did not publish it. An author cannot disown a strike, clear it, or force a clean verdict. Un-gameable.
